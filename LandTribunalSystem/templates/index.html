@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Land Tribunal Register</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --light-color: #ecf0f1;
+            --dark-color: #34495e;
+            --success-color: #2ecc71;
+            --warning-color: #f39c12;
+            --sidebar-width: 250px;
+            --header-height: 60px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: var(--sidebar-width);
+            background-color: var(--primary-color);
+            color: white;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            padding-top: var(--header-height);
+            overflow-y: auto;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .sidebar-header {
+            padding: 1rem;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            padding: 1rem 0;
+        }
+
+        .sidebar-menu li {
+            margin-bottom: 0.5rem;
+        }
+
+        .sidebar-menu a {
+            color: white;
+            text-decoration: none;
+            display: block;
+            padding: 0.8rem 1.5rem;
+            border-left: 4px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .sidebar-menu a:hover, .sidebar-menu a.active {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-left-color: var(--secondary-color);
+        }
+
+        .sidebar-menu i {
+            margin-right: 0.8rem;
+            width: 20px;
+            text-align: center;
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            flex: 1;
+            margin-left: var(--sidebar-width);
+            padding: 20px;
+            padding-top: calc(var(--header-height) + 20px);
+        }
+
+        .header {
+            background-color: white;
+            height: var(--header-height);
+            position: fixed;
+            top: 0;
+            left: var(--sidebar-width);
+            right: 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            z-index: 100;
+        }
+
+        .header-left h1 {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--secondary-color);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+
+        /* Dashboard Styles */
+        .dashboard-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card h3 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .card .number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--secondary-color);
+        }
+
+        .card .card-icon {
+            font-size: 2.5rem;
+            color: var(--secondary-color);
+            margin-bottom: 1rem;
+        }
+
+        /* Form Styles */
+        .form-section {
+            background: white;
+            border-radius: 8px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--light-color);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+        }
+
+        .btn {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn i {
+            margin-right: 0.5rem;
+        }
+
+        .btn-primary {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #2980b9;
+        }
+
+        .btn-success {
+            background-color: var(--success-color);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background-color: #27ae60;
+        }
+
+        .btn-danger {
+            background-color: var(--accent-color);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background-color: #c0392b;
+        }
+
+        /* Table Styles */
+        .data-table-container {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+
+        table th,
+        table td {
+            padding: 0.8rem;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        table th {
+            background-color: var(--primary-color);
+            color: white;
+            position: sticky;
+            top: 0;
+        }
+
+        table tr:hover {
+            background-color: #f5f5f5;
+        }
+
+        .status-badge {
+            padding: 0.3rem 0.6rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .status-badge.pending {
+            background-color: #ffeaa7;
+            color: #d35400;
+        }
+
+        .status-badge.resolved {
+            background-color: #d1f7c4;
+            color: #27ae60;
+        }
+
+        .status-badge.mediation {
+            background-color: #cce5ff;
+            color: #2980b9;
+        }
+
+        .actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .action-btn {
+            padding: 0.3rem 0.6rem;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+
+        .view-btn {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+
+        .edit-btn {
+            background-color: var(--warning-color);
+            color: white;
+        }
+
+        .delete-btn {
+            background-color: var(--accent-color);
+            color: white;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .tab {
+            padding: 0.8rem 1.5rem;
+            cursor: pointer;
+            background: #f1f1f1;
+            border-radius: 5px 5px 0 0;
+            margin-right: 0.3rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .tab.active {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .tab i {
+            margin-right: 0.5rem;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Search and Filters */
+        .search-box {
+            display: flex;
+            margin-bottom: 1rem;
+        }
+
+        .search-box input {
+            flex: 1;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 4px 0 0 4px;
+            font-size: 1rem;
+        }
+
+        .search-box button {
+            padding: 0 1rem;
+            background: var(--secondary-color);
+            color: white;
+            border: none;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 8px;
+            padding: 2rem;
+            width: 90%;
+            max-width: 800px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 60px;
+                overflow: visible;
+            }
+
+            .sidebar .menu-text {
+                display: none;
+            }
+
+            .main-content {
+                margin-left: 60px;
+            }
+
+            .header {
+                left: 60px;
+            }
+
+            .dashboard-cards {
+                grid-template-columns: 1fr;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h2>Land Tribunal</h2>
+        </div>
+        <ul class="sidebar-menu">
+            <li><a href="#" class="active"><i class="fas fa-home"></i> <span class="menu-text">Dashboard</span></a></li>
+            <li><a href="#"><i class="fas fa-gavel"></i> <span class="menu-text">Cases</span></a></li>
+            <li><a href="#"><i class="fas fa-users"></i> <span class="menu-text">Parties</span></a></li>
+            <li><a href="#"><i class="fas fa-chart-bar"></i> <span class="menu-text">Reports</span></a></li>
+            <li><a href="#"><i class="fas fa-cog"></i> <span class="menu-text">Settings</span></a></li>
+            <li><a href="#"><i class="fas fa-sign-out-alt"></i> <span class="menu-text">Logout</span></a></li>
+        </ul>
+    </div>
+
+    <!-- Header -->
+    <div class="header">
+        <div class="header-left">
+            <h1>Land Tribunal Register</h1>
+        </div>
+        <div class="header-right">
+            <div class="user-profile">
+                <div class="user-avatar">AD</div>
+                <div class="user-info">
+                    <div class="user-name">Admin User</div>
+                    <div class="user-role">Administrator</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Dashboard -->
+        <div class="dashboard-section">
+            <h2 class="section-title">Dashboard</h2>
+            <div class="dashboard-cards">
+                <div class="card">
+                    <div class="card-icon"><i class="fas fa-folder-open"></i></div>
+                    <h3>Total Cases</h3>
+                    <div class="number">124</div>
+                    <p>All registered cases</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon"><i class="fas fa-clock"></i></div>
+                    <h3>Pending Cases</h3>
+                    <div class="number">42</div>
+                    <p>Awaiting resolution</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon"><i class="fas fa-check-circle"></i></div>
+                    <h3>Resolved Cases</h3>
+                    <div class="number">76</div>
+                    <p>Successfully closed</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon"><i class="fas fa-handshake"></i></div>
+                    <h3>In Mediation</h3>
+                    <div class="number">6</div>
+                    <p>Currently in ADR process</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs">
+            <div class="tab active" data-tab="add-case"><i class="fas fa-plus"></i> Add New Case</div>
+            <div class="tab" data-tab="view-cases"><i class="fas fa-list"></i> View Cases</div>
+            <div class="tab" data-tab="reports"><i class="fas fa-chart-bar"></i> Reports</div>
+        </div>
+
+        <!-- Add Case Form -->
+        <div class="tab-content active" id="add-case">
+            <div class="form-section">
+                <h2 class="section-title">Register New Case</h2>
+                <form id="case-form">
+                    <h3 class="section-subtitle">Case Details</h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="receipt-date">Date of receipt of appeal</label>
+                            <input type="date" id="receipt-date" name="receipt-date">
+                        </div>
+                        <div class="form-group">
+                            <label for="registration-date">Date of registration</label>
+                            <input type="date" id="registration-date" name="registration-date">
+                        </div>
+                        <div class="form-group">
+                            <label for="acknowledgement-date">Date of acknowledgement</label>
+                            <input type="date" id="acknowledgement-date" name="acknowledgement-date">
+                        </div>
+                        <div class="form-group">
+                            <label for="case-number">Case No.</label>
+                            <input type="text" id="case-number" name="case-number" placeholder="Case number">
+                        </div>
+                        <div class="form-group">
+                            <label for="appeal-subject">Subject of appeal</label>
+                            <input type="text" id="appeal-subject" name="appeal-subject" placeholder="Subject of appeal">
+                        </div>
+                        <div class="form-group">
+                            <label for="land-use-category">Land use category</label>
+                            <select id="land-use-category" name="land-use-category">
+                                <option value="">Select category</option>
+                                <option value="residential">Residential</option>
+                                <option value="commercial">Commercial</option>
+                                <option value="agricultural">Agricultural</option>
+                                <option value="industrial">Industrial</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <h3 class="section-subtitle">Appellant Details</h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="appellant-surname">Surname</label>
+                            <input type="text" id="appellant-surname" name="appellant-surname" placeholder="Surname">
+                        </div>
+                        <div class="form-group">
+                            <label for="appellant-firstname">First Name(s)</label>
+                            <input type="text" id="appellant-firstname" name="appellant-firstname" placeholder="First Name(s)">
+                        </div>
+                        <div class="form-group">
+                            <label for="appellant-id">Omang/Passport No.</label>
+                            <input type="text" id="appellant-id" name="appellant-id" placeholder="ID number">
+                        </div>
+                        <div class="form-group">
+                            <label for="appellant-sex">Sex</label>
+                            <select id="appellant-sex" name="appellant-sex">
+                                <option value="">Select sex</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                                <option value="PWD male">PWD Male</option>
+                                <option value="PWD female">PWD Female</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="appellant-dob">Date of Birth</label>
+                            <input type="date" id="appellant-dob" name="appellant-dob">
+                        </div>
+                        <div class="form-group">
+                            <label for="appellant-age">Age</label>
+                            <input type="number" id="appellant-age" name="appellant-age" placeholder="Age">
+                        </div>
+                    </div>
+
+                    <h3 class="section-subtitle">Respondent Details</h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="respondent-surname">Surname</label>
+                            <input type="text" id="respondent-surname" name="respondent-surname" placeholder="Surname">
+                        </div>
+                        <div class="form-group">
+                            <label for="respondent-firstname">First Name(s)</label>
+                            <input type="text" id="respondent-firstname" name="respondent-firstname" placeholder="First Name(s)">
+                        </div>
+                        <div class="form-group">
+                            <label for="respondent-id">Omang/Passport No.</label>
+                            <input type="text" id="respondent-id" name="respondent-id" placeholder="ID number">
+                        </div>
+                    </div>
+
+                    <h3 class="section-subtitle">ADR Process</h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="adr-date">Date referral for ADR</label>
+                            <input type="date" id="adr-date" name="adr-date">
+                        </div>
+                        <div class="form-group">
+                            <label for="adr-method">ADR Method</label>
+                            <select id="adr-method" name="adr-method">
+                                <option value="">Select method</option>
+                                <option value="mediation">Mediation</option>
+                                <option value="conciliation">Conciliation</option>
+                                <option value="arbitration">Arbitration</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Save Case</button>
+                    <button type="reset" class="btn"><i class="fas fa-times"></i> Clear Form</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- View Cases -->
+        <div class="tab-content" id="view-cases">
+            <div class="data-table-container">
+                <h2 class="section-title">Case Records</h2>
+
+                <div class="search-box">
+                    <input type="text" placeholder="Search cases...">
+                    <button><i class="fas fa-search"></i></button>
+                </div>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Case No.</th>
+                            <th>Receipt Date</th>
+                            <th>Appellant</th>
+                            <th>Respondent</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>LT2023-001</td>
+                            <td>2023-04-15</td>
+                            <td>John Doe</td>
+                            <td>Botswana Land Board</td>
+                            <td><span class="status-badge pending">Pending</span></td>
+                            <td class="actions">
+                                <button class="action-btn view-btn"><i class="fas fa-eye"></i></button>
+                                <button class="action-btn edit-btn"><i class="fas fa-edit"></i></button>
+                                <button class="action-btn delete-btn"><i class="fas fa-trash"></i></button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>LT2023-002</td>
+                            <td>2023-04-18</td>
+                            <td>Mary Smith</td>
+                            <td>Gaborone City Council</td>
+                            <td><span class="status-badge resolved">Resolved</span></td>
+                            <td class="actions">
+                                <button class="action-btn view-btn"><i class="fas fa-eye"></i></button>
+                                <button class="action-btn edit-btn"><i class="fas fa-edit"></i></button>
+                                <button class="action-btn delete-btn"><i class="fas fa-trash"></i></button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>LT2023-003</td>
+                            <td>2023-04-20</td>
+                            <td>James Brown</td>
+                            <td>Ministry of Lands</td>
+                            <td><span class="status-badge mediation">In Mediation</span></td>
+                            <td class="actions">
+                                <button class="action-btn view-btn"><i class="fas fa-eye"></i></button>
+                                <button class="action-btn edit-btn"><i class="fas fa-edit"></i></button>
+                                <button class="action-btn delete-btn"><i class="fas fa-trash"></i></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Reports -->
+        <div class="tab-content" id="reports">
+            <div class="form-section">
+                <h2 class="section-title">Reports & Analytics</h2>
+
+                <div class="form-grid">
+                    <div class="card">
+                        <h3>Case Status Distribution</h3>
+                        <div id="status-chart" style="height: 200px; background: #f1f1f1; display: flex; align-items: center; justify-content: center; border-radius: 8px;">
+                            <i class="fas fa-chart-pie" style="font-size: 3rem; color: #ccc;"></i>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <h3>Monthly Cases</h3>
+                        <div id="monthly-chart" style="height: 200px; background: #f1f1f1; display: flex; align-items: center; justify-content: center; border-radius: 8px;">
+                            <i class="fas fa-chart-bar" style="font-size: 3rem; color: #ccc;"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 class="section-subtitle">Generate Report</h3>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="report-type">Report Type</label>
+                        <select id="report-type" name="report-type">
+                            <option value="case-summary">Case Summary</option>
+                            <option value="adr-process">ADR Process Report</option>
+                            <option value="time-analysis">Turnaround Time Analysis</option>
+                            <option value="land-use">Land Use Category Report</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="date-from">From Date</label>
+                        <input type="date" id="date-from" name="date-from">
+                    </div>
+                    <div class="form-group">
+                        <label for="date-to">To Date</label>
+                        <input type="date" id="date-to" name="date-to">
+                    </div>
+                </div>
+                <button class="btn btn-success"><i class="fas fa-download"></i> Generate Report</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Case Detail Modal -->
+    <div class="modal" id="case-detail-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Case Details: LT2023-001</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <h3>Case Information</h3>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Receipt Date:</label>
+                        <p>15/04/2023</p>
+                    </div>
+                    <div class="form-group">
+                        <label>Registration Date:</label>
+                        <p>17/04/2023</p>
+                    </div>
+                    <div class="form-group">
+                        <label>Case Number:</label>
+                        <p>LT2023-001</p>
+                    </div>
+                    <div class="form-group">
+                        <label>Subject of Appeal:</label>
+                        <p>Land ownership dispute</p>
+                    </div>
+                </div>
+
+                <h3>Appellant Information</h3>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Name:</label>
+                        <p>John Doe</p>
+                    </div>
+                    <div class="form-group">
+                        <label>ID Number:</label>
+                        <p>123456789</p>
+                    </div>
+                    <div class="form-group">
+                        <label>Contact:</label>
+                        <p>+267 1234567</p>
+                    </div>
+                </div>
+
+                <h3>Case Status</h3>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Current Status:</label>
+                        <p>Pending</p>
+                    </div>
+                    <div class="form-group">
+                        <label>Last Updated:</label>
+                        <p>20/04/2023</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Tab functionality
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Remove active class from all tabs and contents
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+
+                // Add active class to clicked tab and corresponding content
+                tab.classList.add('active');
+                document.getElementById(tab.getAttribute('data-tab')).classList.add('active');
+            });
+        });
+
+        // Form submission
+        document.getElementById('case-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Case saved successfully!');
+            // In a real application, you would send the data to a server here
+        });
+
+        // Calculate age based on date of birth
+        const dobInput = document.getElementById('appellant-dob');
+        const ageInput = document.getElementById('appellant-age');
+
+        if (dobInput && ageInput) {
+            dobInput.addEventListener('change', function() {
+                const dob = new Date(this.value);
+                const today = new Date();
+                let age = today.getFullYear() - dob.getFullYear();
+                const monthDiff = today.getMonth() - dob.getMonth();
+
+                if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dob.getDate())) {
+                    age--;
+                }
+
+                ageInput.value = age;
+            });
+        }
+
+        // Modal functionality
+        const modal = document.getElementById('case-detail-modal');
+        const viewButtons = document.querySelectorAll('.view-btn');
+        const closeModal = document.querySelector('.close-modal');
+
+        viewButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                modal.style.display = 'flex';
+            });
+        });
+
+        closeModal.addEventListener('click', () => {
+            modal.style.display = 'none';
+        });
+
+        window.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+
+        // Sample data for charts
+        function renderCharts() {
+            // In a real application, you would use a charting library like Chart.js
+            console.log("Charts would be rendered here with real data");
+        }
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            renderCharts();
+        });
+
+
+
+
+
+
+
+        // Function to get CSRF token from cookies
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        // Function to load cases from the API
+        async function loadCases() {
+            try {
+                const response = await fetch('/api/cases/');
+                const cases = await response.json();
+
+                const casesList = document.getElementById('cases-list');
+                casesList.innerHTML = '';
+
+                if (cases.length === 0) {
+                    casesList.innerHTML = '<p>No cases yet. Add one above!</p>';
+                    return;
+                }
+
+                cases.forEach(caseItem => {
+                    const caseElement = document.createElement('div');
+                    caseElement.className = 'case-item';
+                    caseElement.innerHTML = `
+                        <strong>${caseItem.case_number}</strong> - ${caseItem.appellant_name} vs ${caseItem.respondent_name}
+                        <br>Status: ${caseItem.status}
+                    `;
+                    casesList.appendChild(caseElement);
+                });
+            } catch (error) {
+                console.error('Error loading cases:', error);
+                document.getElementById('cases-list').innerHTML = '<p>Error loading cases. Please check if the server is running.</p>';
+            }
+        }
+
+        // Handle form submission
+        document.getElementById('case-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            // Get form values
+            const caseData = {
+                case_number: document.getElementById('case-number').value,
+                date_receipt: document.getElementById('date-receipt').value,
+                appellant_name: document.getElementById('appellant-name').value,
+                respondent_name: document.getElementById('respondent-name').value,
+                subject: document.getElementById('subject').value,
+                status: 'Pending'
+            };
+
+            try {
+                // Send data to the API
+                const response = await fetch('/api/cases/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCookie('csrftoken')
+                    },
+                    body: JSON.stringify(caseData)
+                });
+
+                if (response.ok) {
+                    alert('Case saved successfully!');
+                    document.getElementById('case-form').reset();
+                    loadCases(); // Reload the cases list
+                } else {
+                    alert('Error saving case. Please try again.');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error saving case. Please check if the server is running.');
+            }
+        });
+
+        // Load cases when the page loads
+        document.addEventListener('DOMContentLoaded', loadCases);
+
+
+
+
+
+
+
+
+
+    </script>
+</body>
+</html>
